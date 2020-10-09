@@ -1,0 +1,61 @@
+{
+  "name": "steam-market-parser",
+  "version": "1.0.0",
+  "description": "SteamCommunity market parser. Quick way to parse steam prices for skins",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dev-syco/quick-math"
+  },
+  "bugs": {
+    "url": "https://github.com/dev-syco/quick-math/issues"
+  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "mocha -r ts-node/register tests/**/*.test.ts",
+    "coverage": "nyc mocha -r ts-node/register tests/**/*.test.ts && nyc report --reporter=json",
+    "lint": "tslint -p tsconfig.json"
+  },
+  "author": "Pavel Kornienko",
+  "license": "MIT",
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "keywords": [
+    "steam",
+    "market",
+    "api",
+    "fetch",
+    "community",
+    "csgo",
+    "tf2",
+    "dota2",
+    "skins",
+    "items",
+    "module",
+    "prices",
+    "images",
+    "economy",
+    "cdn",
+    "listings",
+    "data"
+  ],
+  "devDependencies": {
+    "@types/chai": "^4.2.13",
+    "@types/mocha": "^8.0.3",
+    "@types/node": "^12.12.65",
+    "chai": "^4.2.0",
+    "codecov": "^3.8.0",
+    "mocha": "^8.1.3",
+    "nyc": "^15.1.0",
+    "prettier": "^2.1.2",
+    "ts-node": "^9.0.0",
+    "tslint": "^6.1.3",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.9.7"
+  },
+  "dependencies": {
+    "https-proxy-agent": "^5.0.0"
+  }
+}
