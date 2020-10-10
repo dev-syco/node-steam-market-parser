@@ -4,17 +4,17 @@
   "description": "SteamCommunity market parser. Quick way to parse steam prices for skins",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dev-syco/quick-math"
+    "url": "https://github.com/dev-syco/node-steam-market-parser"
   },
   "bugs": {
-    "url": "https://github.com/dev-syco/quick-math/issues"
+    "url": "https://github.com/dev-syco/node-steam-market-parser/issues"
   },
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "mocha -r ts-node/register tests/**/*.test.ts",
-    "coverage": "nyc mocha -r ts-node/register tests/**/*.test.ts && nyc report --reporter=json",
+    "coverage": "nyc mocha -r ts-node/register tests/**/*.test.ts && nyc report --reporter=lcov",
     "lint": "tslint -p tsconfig.json"
   },
   "author": "Pavel Kornienko",
