@@ -54,11 +54,11 @@ jobs:
       - attach_workspace:
           at: .
       - run: |
-          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
           npm publish
 
 workflows:
-  build_deploy:
+  build_deploy:K
     jobs:
       - test
       - codacy-coverage-report:
