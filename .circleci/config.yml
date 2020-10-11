@@ -25,7 +25,7 @@ jobs:
           root: .
           paths:
             - node_modules
-      - run: npm coverage
+      - run: npm run test
   build:
     <<: *defaults
     steps:
@@ -43,7 +43,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - run: npm coverage
+      - run: npm run coverage
       - coverage-reporter/send_report:
           coverage-reports: 'lcov.info'
           project-token: $CODACY_PROJECT_TOKEN
