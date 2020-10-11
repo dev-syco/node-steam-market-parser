@@ -1,6 +1,8 @@
-/* Date, price, count */
+import { HttpsProxyAgentOptions } from 'https-proxy-agent';
+
 import { Currency } from './const';
 
+/* Date, price, count */
 export type PriceHistoryItem = [ string, number, string ];
 
 /* Price, count, description */
@@ -44,10 +46,12 @@ export interface MarketHistogramData {
   price_suffix: string;
 }
 
+type AppId = number | string;
+
 export interface SteamMarketParserOptions {
-  currency?: Currency | number;
-  appId?: number | string;
-  proxy?: string;
+  currency: Currency | number;
+  appId: AppId;
+  proxy?: string | HttpsProxyAgentOptions;
 }
 
 export interface HttpRequestParams {
@@ -57,5 +61,27 @@ export interface HttpRequestParams {
   method: 'GET' | 'POST';
   params?: object;
   json?: boolean;
-  proxy?: string;
+  proxy?: string | HttpsProxyAgentOptions;
+}
+
+export interface PriceOverviewParams {
+  query: {
+    appid: AppId;
+    currency: Currency | number;
+  }
+  proxy?: string | HttpsProxyAgentOptions;
+}
+
+export interface OrderHistogramParams {
+  query: {
+    language: string;
+    country: string;
+    currency: Currency | number;
+  }
+  proxy?: string | HttpsProxyAgentOptions;
+}
+
+export interface MarketDataParams {
+  appId: AppId;
+  proxy?: string | HttpsProxyAgentOptions;
 }
