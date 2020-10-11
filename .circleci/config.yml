@@ -53,8 +53,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - run:
-        command: |
+      - run: |
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
           npm publish
 
