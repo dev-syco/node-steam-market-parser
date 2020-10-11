@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   coverage-reporter: codacy/coverage-reporter@11.3.8
-  
+
 defaults: &defaults
   docker:
     - image: circleci/node:12
@@ -47,6 +47,7 @@ jobs:
       - coverage-reporter/send_report:
           coverage-reports: 'lcov.info'
           project-token: $CODACY_PROJECT_TOKEN
+
 workflows:
   build_deploy:
     jobs:
