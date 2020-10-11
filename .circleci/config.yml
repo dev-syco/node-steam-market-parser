@@ -58,7 +58,7 @@ jobs:
           npm publish
 
 workflows:
-  build_deploy:K
+  build_deploy:
     jobs:
       - test
       - codacy-coverage-report:
