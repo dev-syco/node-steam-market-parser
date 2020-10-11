@@ -1,11 +1,12 @@
 {
   "name": "steam-market-parser",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "SteamCommunity market parser. Quick way to parse steam prices for skins",
   "repository": {
     "type": "git",
     "url": "https://github.com/dev-syco/node-steam-market-parser"
   },
+  "homepage": "https://github.com/dev-syco/node-steam-market-parser/wiki",
   "bugs": {
     "url": "https://github.com/dev-syco/node-steam-market-parser/issues"
   },
