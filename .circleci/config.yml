@@ -68,5 +68,8 @@ workflows:
           requires:
             - test
       - npm-publish:
+          filters:
+            tags:
+              only: /^v.*/
           requires:
             - build
