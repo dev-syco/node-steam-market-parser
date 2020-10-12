@@ -77,7 +77,7 @@ export interface OrderHistogramParams {
     language: string;
     country: string;
     currency: Currency | number;
-  }
+  };
   proxy?: string | HttpsProxyAgentOptions;
 }
 

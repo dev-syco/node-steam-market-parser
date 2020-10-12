@@ -6,7 +6,7 @@ import { MarketDataParams, MarketHistogramData, MarketItemData, MarketPriceOverv
 export class SteamMarketParser {
   public options: SteamMarketParserOptions = {
     currency: Currency.USD,
-    appId: 730
+    appId: 730,
   };
 
   public constructor(options?: SteamMarketParserOptions) {
@@ -24,7 +24,7 @@ export class SteamMarketParser {
         language: 'english',
         currency: Currency.USD,
       },
-      proxy: this.options.proxy
+      proxy: this.options.proxy,
     };
 
     return SteamMarketParser.getOrderHistogram(itemNameId, params);
@@ -36,7 +36,7 @@ export class SteamMarketParser {
         appid: this.options.appId,
         currency: this.options.currency,
       },
-      proxy: this.options.proxy
+      proxy: this.options.proxy,
     });
   }
 
@@ -68,7 +68,7 @@ export class SteamMarketParser {
     const params = {
       item_nameid: itemNameId,
       norender: 1,
-      ...options.query
+      ...options.query,
     };
     const path = `/market/itemordershistogram`;
 
@@ -78,7 +78,7 @@ export class SteamMarketParser {
   public static getPriceOverview(itemName: string, options: PriceOverviewParams): Promise<MarketPriceOverview> {
     const params = {
       market_hash_name: escape(itemName),
-      ...options.query
+      ...options.query,
     };
     const path = `/market/priceoverview`;
 
