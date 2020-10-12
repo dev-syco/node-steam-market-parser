@@ -68,7 +68,7 @@ export interface PriceOverviewParams {
   query: {
     appid: AppId;
     currency: Currency | number;
-  }
+  };
   proxy?: string | HttpsProxyAgentOptions;
 }
 

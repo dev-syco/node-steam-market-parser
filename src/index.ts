@@ -22,7 +22,7 @@ export class SteamMarketParser {
       query: {
         country: 'EN',
         language: 'english',
-        currency: Currency.USD,
+        currency: this.options.currency,
       },
       proxy: this.options.proxy,
     };

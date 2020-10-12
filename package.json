@@ -1,6 +1,6 @@
 {
   "name": "steam-market-parser",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "SteamCommunity market parser. Quick way to parse steam prices for skins",
   "repository": {
     "type": "git",
@@ -21,7 +21,7 @@
   "author": "Pavel Kornienko",
   "license": "MIT",
   "engines": {
-    "node": ">=10.0.0"
+    "node": ">=8.0.0"
   },
   "keywords": [
     "steam",
