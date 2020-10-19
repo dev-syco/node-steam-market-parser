@@ -46,7 +46,7 @@ export interface MarketHistogramData {
   price_suffix: string;
 }
 
-type AppId = number | string;
+export type AppId = number | string;
 
 export interface SteamMarketParserOptions {
   currency: Currency | number;
