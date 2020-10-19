@@ -51,6 +51,8 @@ export type AppId = number | string;
 export interface SteamMarketParserOptions {
   currency: Currency | number;
   appId: AppId;
+  country?: string;
+  language?: string;
   proxy?: string | HttpsProxyAgentOptions;
 }
 
@@ -74,8 +76,8 @@ export interface PriceOverviewParams {
 
 export interface OrderHistogramParams {
   query: {
-    language: string;
-    country: string;
+    language?: string;
+    country?: string;
     currency: Currency | number;
   };
   proxy?: string | HttpsProxyAgentOptions;

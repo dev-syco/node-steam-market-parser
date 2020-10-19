@@ -5,6 +5,8 @@ import { MarketDataParams, MarketHistogramData, MarketItemData, MarketPriceOverv
 
 export class SteamMarketParser {
   public options: SteamMarketParserOptions = {
+    country: 'EN',
+    language: 'english',
     currency: Currency.USD,
     appId: 730,
   };
@@ -20,8 +22,8 @@ export class SteamMarketParser {
   public getOrderHistogram(itemNameId: string | number): Promise<MarketHistogramData> {
     const params = {
       query: {
-        country: 'EN',
-        language: 'english',
+        country: this.options.country,
+        language: this.options.language,
         currency: this.options.currency,
       },
       proxy: this.options.proxy,
@@ -41,7 +43,7 @@ export class SteamMarketParser {
   }
 
   public static async getMarketData(itemName: string, options: MarketDataParams): Promise<MarketItemData> {
-    const path = `/market/listings/${ options.appId }/${ escape(itemName) }`;
+    const path = `/market/listings/${ options.appId }/${ encodeURI(itemName) }`;
     const response = await SteamMarketParser.request({ path, proxy: options.proxy });
 
     return parseMarketData(response);
