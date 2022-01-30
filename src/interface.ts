@@ -12,6 +12,14 @@ export interface MarketItemData {
   itemNameId?: number;
   icon?: string;
   priceHistory?: PriceHistoryItem[];
+  assets?: {
+    descriptions: { type: string, value: string, color?: string }[],
+    actions: { link: string, name: string }[],
+    type: string,
+    name_color: string,
+    name: string,
+    market_hash_name: string
+  }
 }
 
 export interface MarketPriceOverview {
@@ -70,6 +78,7 @@ export interface PriceOverviewParams {
   query: {
     appid: AppId;
     currency: Currency | number;
+    language?: string;
   };
   proxy?: string | HttpsProxyAgentOptions;
 }
@@ -86,4 +95,7 @@ export interface OrderHistogramParams {
 export interface MarketDataParams {
   appId: AppId;
   proxy?: string | HttpsProxyAgentOptions;
+  query: {
+    l?: string;
+  };
 }

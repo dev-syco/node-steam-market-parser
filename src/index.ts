@@ -16,7 +16,14 @@ export class SteamMarketParser {
   }
 
   public getMarketData(itemName: string): Promise<MarketItemData> {
-    return SteamMarketParser.getMarketData(itemName, { appId: this.options.appId, proxy: this.options.proxy });
+    const params = {
+      appId: this.options.appId,
+      query: {
+        l: this.options.language
+      },
+      proxy: this.options.proxy,
+    };
+    return SteamMarketParser.getMarketData(itemName, params);
   }
 
   public getOrderHistogram(itemNameId: string | number): Promise<MarketHistogramData> {
@@ -37,6 +44,7 @@ export class SteamMarketParser {
       query: {
         appid: this.options.appId,
         currency: this.options.currency,
+        language: this.options.language,
       },
       proxy: this.options.proxy,
     });
@@ -44,7 +52,7 @@ export class SteamMarketParser {
 
   public static async getMarketData(itemName: string, options: MarketDataParams): Promise<MarketItemData> {
     const path = `/market/listings/${ options.appId }/${ encodeURI(itemName) }`;
-    const response = await SteamMarketParser.request({ path, proxy: options.proxy });
+    const response = await SteamMarketParser.request({ path, proxy: options.proxy, params: options.query });
 
     return parseMarketData(response);
   }

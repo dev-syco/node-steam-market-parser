@@ -1,6 +1,7 @@
 export enum Errors {
   PARSING_ERROR = 'Error while parsing',
   PRICE_HISTORY_PARSE_ERROR = 'Error while parsing price history page',
+  ASSETS_PARSE_ERROR = 'Error while parsing assets data',
   PAGE_PARSING_ERROR = 'Error while parsing steamcommunity page',
   PROXY_CONNECTION_ERROR = 'Proxy connection error',
 }

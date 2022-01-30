@@ -7,7 +7,8 @@ describe('Request tests', () => {
   const params = {
     test: 'testParam'
   };
-  before(async () => {
+  before(async function() {
+    this.timeout(10000)
     response = await httpRequest({ path, json: true, hostname: 'httpbin.org', port: 443, method: 'GET', params });
   });
 

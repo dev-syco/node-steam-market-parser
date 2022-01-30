@@ -8,11 +8,13 @@ describe('Base tests', () => {
   let orderHistogram: MarketHistogramData;
   let errorTest: any;
 
-  before(async () => {
+  before(async function() {
+    this.timeout(30000)
     priceOverview = await parser.getPriceOverview('Flight of Epiphany');
     parser.options.appId = 730;
     parser.options.currency = Currency.USD;
     marketData = await parser.getMarketData('Five-SeveN | Hyper Beast (Field-Tested)');
+    console.log(marketData.assets);
     errorTest = await parser.getMarketData('some random string to text exception');
 
     if (marketData.itemNameId) {
@@ -37,7 +39,7 @@ describe('Base tests', () => {
   });
 
   it('Exception test', () => {
-    expect(errorTest).to.eql({ itemNameId: undefined, icon: '', priceHistory: undefined }
+    expect(errorTest).to.eql({ itemNameId: undefined, icon: '', priceHistory: undefined, assets: undefined }
     );
   });
 });

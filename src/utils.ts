@@ -61,10 +61,27 @@ export function parsePriceHistory(data: string) {
   }
 }
 
+export function parseAssetsJSON(data: string) {
+  try {
+    data = data.replace(/(\r\n|\n|\r)/gm, '');
+    const assets = JSON.parse(`{${data}}`);
+    const appId = Object.keys(assets)[0];
+    const contextId = Object.keys(assets[appId])[0];
+    const firstAvailableItemId = Object.keys(assets[appId][contextId])[0];
+    const firstAvailableItem = assets[appId][contextId][firstAvailableItemId];
+    const { descriptions, actions, type, name_color, name, market_hash_name } = firstAvailableItem || {};
+
+    return { descriptions, actions, type, name_color, name, market_hash_name };
+  } catch (e) {
+    throw new Error(`${ Errors.ASSETS_PARSE_ERROR }: ${ e }`);
+  }
+}
+
 export function parseMarketData(page: string) {
   const result: any = {
     itemNameId: { value: '', regExp: /Market_LoadOrderSpread\((.*[0-9]?)\)/ },
     priceHistory: { value: '', regExp: /var line1=\[(.*)\]/ },
+    assets: { value: '', regExp: /var g_rgAssets = \{(.*)\}/ },
     icon: { value: '', regExp: /https\:\/\/.*\/economy\/image\/(.*)\// },
   };
 
@@ -79,6 +96,7 @@ export function parseMarketData(page: string) {
   return {
     itemNameId: result.itemNameId.value && Number(result.itemNameId.value),
     icon: result.icon.value,
+    assets: result.assets.value && parseAssetsJSON(result.assets.value),
     priceHistory: result.priceHistory.value && parsePriceHistory(result.priceHistory.value),
   };
 }
