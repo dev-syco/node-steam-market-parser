@@ -14,7 +14,6 @@ describe('Base tests', () => {
     parser.options.appId = 730;
     parser.options.currency = Currency.USD;
     marketData = await parser.getMarketData('Five-SeveN | Hyper Beast (Field-Tested)');
-    console.log(marketData.assets);
     errorTest = await parser.getMarketData('some random string to text exception');
 
     if (marketData.itemNameId) {
