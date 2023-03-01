@@ -1,6 +1,6 @@
 {
   "name": "steam-market-parser",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "SteamCommunity market parser. Quick way to parse steam prices for skins",
   "repository": {
     "type": "git",
@@ -57,8 +57,6 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
-    "https-proxy-agent": "^5.0.0",
-    "request": "^2.88.2",
-    "request-promise": "^4.2.6"
+    "https-proxy-agent": "^5.0.0"
   }
 }
