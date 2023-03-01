@@ -70,7 +70,7 @@ export class SteamMarketParser {
 
   public static getPriceOverview(itemName: string, options: PriceOverviewParams): Promise<MarketPriceOverview> {
     const params = {
-      market_hash_name: escape(itemName),
+      market_hash_name: encodeURI(itemName),
       ...options.query,
     };
     const path = `/market/priceoverview`;
