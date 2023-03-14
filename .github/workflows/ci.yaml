@@ -19,7 +19,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
       - name: Restore Cache
@@ -43,7 +43,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
       - name: Restore Cache
@@ -55,7 +55,6 @@ jobs:
         run: npm ci
       - name: Run unit coverage
         run: npm run coverage
-      - uses: actions/checkout@v2
       - name: Run codacy-coverage-reporter
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
@@ -70,7 +69,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
       - name: Restore Cache
@@ -81,7 +80,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run build
-        run: npm run build
+        run: |
+          npm run build
+          rm -rf node_modules
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
@@ -92,13 +93,19 @@ jobs:
     runs-on: ubuntu-latest
     name: publish
     steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
       - name: Restore Cache
         uses: actions/cache@v3
         with:
           path: node_modules
           key: ${{ runner.os }}-modules-${{ hashFiles('package-lock.json') }}
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
+      - name: Install dependencies
+        run: npm ci
       - name: Publish
         uses: JS-DevTools/npm-publish@v1
         with:
