@@ -11,13 +11,17 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [18.x]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Set up NodeJS
-        uses: actions/setup-node@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
         with:
-          node-version: '18.13'
+          node-version: ${{ matrix.node-version }}
       - name: Restore Cache
         uses: actions/cache@v3
         with:
@@ -36,11 +40,19 @@ jobs:
     runs-on: ubuntu-latest
     name: coverage-reporter
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
       - name: Restore Cache
         uses: actions/cache@v3
         with:
           path: node_modules
           key: ${{ runner.os }}-modules-${{ hashFiles('package-lock.json') }}
+      - name: Install dependencies
+        run: npm ci
       - name: Run unit coverage
         run: npm run coverage
       - uses: actions/checkout@v2
@@ -55,11 +67,19 @@ jobs:
     runs-on: ubuntu-latest
     name: build
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
       - name: Restore Cache
         uses: actions/cache@v3
         with:
           path: node_modules
           key: ${{ runner.os }}-modules-${{ hashFiles('package-lock.json') }}
+      - name: Install dependencies
+        run: npm ci
       - name: Run build
         run: npm run build
       - name: Upload Artifact
