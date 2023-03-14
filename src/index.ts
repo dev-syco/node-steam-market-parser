@@ -1,11 +1,20 @@
 import { httpRequest, parseMarketData } from './utils';
 import { Currency } from './const';
 import { HttpsProxyAgentOptions } from 'https-proxy-agent';
-import { MarketDataParams, MarketHistogramData, MarketItemData, MarketPriceOverview, OrderHistogramParams, PriceOverviewParams, SteamMarketParserOptions } from './interface';
+import {
+  ListingData, ListingParams,
+  MarketDataParams,
+  MarketHistogramData,
+  MarketItemData,
+  MarketPriceOverview,
+  OrderHistogramParams,
+  PriceOverviewParams,
+  SteamMarketParserOptions
+} from './interface';
 
 export class SteamMarketParser {
   public options: SteamMarketParserOptions = {
-    country: 'EN',
+    country: 'US',
     language: 'english',
     currency: Currency.USD,
     appId: 730,
@@ -39,6 +48,20 @@ export class SteamMarketParser {
     return SteamMarketParser.getOrderHistogram(itemNameId, params);
   }
 
+  public getListing(itemName: string, { start, count } = { start: 0, count: 1}): Promise<ListingData> {
+    const params = {
+      appId: this.options.appId,
+      query: {
+        country: this.options.country,
+        language: this.options.language,
+        currency: this.options.currency,
+        start, count,
+      },
+      proxy: this.options.proxy,
+    };
+    return SteamMarketParser.getListing(itemName, params);
+  }
+
   public getPriceOverview(itemName: string) {
     return SteamMarketParser.getPriceOverview(itemName, {
       query: {
@@ -55,6 +78,17 @@ export class SteamMarketParser {
     const response = await SteamMarketParser.request({ path, proxy: options.proxy, params: options.query });
 
     return parseMarketData(response);
+  }
+
+  public static getListing(itemName: string, options: ListingParams): Promise<ListingData> {
+    const params = {
+      count: 1,
+      currency: Currency.USD,
+      language: 'english',
+      ...options.query,
+    };
+    const path = `/market/listings/${ options.appId }/${ encodeURI(itemName) }/render`;
+    return SteamMarketParser.request({ path, json: true, proxy: options.proxy, params });
   }
 
   public static getOrderHistogram(itemNameId: string | number, options: OrderHistogramParams): Promise<MarketHistogramData> {

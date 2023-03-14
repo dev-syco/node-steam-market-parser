@@ -90,6 +90,7 @@ jobs:
           path: .
 
   publish:
+    if: github.ref == 'refs/heads/master'
     needs: [test, build]
     runs-on: ubuntu-latest
     name: publish
