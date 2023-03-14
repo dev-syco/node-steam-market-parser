@@ -99,3 +99,111 @@ export interface MarketDataParams {
     l?: string;
   };
 }
+
+export interface ListingParams {
+  appId: AppId;
+  proxy?: string | HttpsProxyAgentOptions;
+  query: {
+    language?: string;
+    currency?: Currency;
+    count?: number;
+    start?: number;
+  };
+}
+
+
+export interface ListingData {
+  success: boolean;
+  start: number;
+  pagesize: number;
+  total_count: number;
+  results_html: string;
+  listinginfo: {
+    [listingid: string]: {
+      listingid: string;
+      price: number;
+      fee: number;
+      publisher_fee_app: number;
+      publisher_fee_percent: string;
+      currencyid: number;
+      steam_fee: number;
+      publisher_fee: number;
+      converted_price: number;
+      converted_fee: number;
+      converted_currencyid: number;
+      converted_steam_fee: number;
+      converted_publisher_fee: number;
+      converted_price_per_unit: number;
+      converted_fee_per_unit: number;
+      converted_steam_fee_per_unit: number;
+      converted_publisher_fee_per_unit: number;
+      asset: {
+        currency: number;
+        appid: number;
+        contextid: string;
+        id: string;
+        amount: string;
+        market_actions: {
+          link: string;
+          name: string;
+        }[];
+      };
+    };
+  };
+  assets: {
+    [appid: number]: {
+      [contextid: string]: {
+        [id: string]: {
+          currency: number;
+          appid: number;
+          contextid: string;
+          id: string;
+          classid: string;
+          instanceid: string;
+          amount: string;
+          status: number;
+          original_amount: string;
+          unowned_id: string;
+          unowned_contextid: string;
+          background_color: string;
+          icon_url: string;
+          icon_url_large: string;
+          descriptions: {
+            type: string;
+            value: string;
+            color?: string;
+          }[];
+          tradable: number;
+          actions: {
+            link: string;
+            name: string;
+          }[];
+          name: string;
+          name_color: string;
+          type: string;
+          market_name: string;
+          market_hash_name: string;
+          market_actions: {
+            link: string;
+            name: string;
+          }[];
+          commodity: number;
+          market_tradable_restriction: number;
+          marketable: number;
+          app_icon: string;
+          owner: number;
+        };
+      };
+    };
+  };
+  currency: []
+  hovers: string;
+  app_data: {
+    [appid: number]: {
+      appid: number;
+      name: string;
+      icon: string;
+      link: string;
+    };
+  };
+}
