@@ -54,6 +54,13 @@ export interface MarketHistogramData {
   price_suffix: string;
 }
 
+export interface MarketPriceHistory {
+  success: 0 | 1;
+  price_prefix: string;
+  price_suffix: string;
+  prices: PriceHistoryItem[]
+}
+
 export type AppId = number | string;
 
 export interface SteamMarketParserOptions {
@@ -62,6 +69,7 @@ export interface SteamMarketParserOptions {
   country?: string;
   language?: string;
   proxy?: string | HttpsProxyAgentOptions;
+  cookie?: string;
 }
 
 export interface HttpRequestParams {
@@ -72,6 +80,7 @@ export interface HttpRequestParams {
   params?: object;
   json?: boolean;
   proxy?: string | HttpsProxyAgentOptions;
+  headers?: Record<string, string>
 }
 
 export interface PriceOverviewParams {
@@ -80,6 +89,14 @@ export interface PriceOverviewParams {
     currency: Currency | number;
     language?: string;
   };
+  proxy?: string | HttpsProxyAgentOptions;
+}
+
+export interface PriceHistoryParams {
+  query: {
+    appid: AppId;
+  };
+  cookie: string;
   proxy?: string | HttpsProxyAgentOptions;
 }
 

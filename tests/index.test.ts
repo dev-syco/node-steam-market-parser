@@ -8,12 +8,13 @@ import SteamMarketParser, {
 import { expect } from 'chai';
 
 describe('Base tests', () => {
-  const parser = new SteamMarketParser({ appId: 570, currency: Currency.EUR });
+  const parser = new SteamMarketParser({ appId: 570, currency: Currency.EUR, cookie: ' ' });
   let priceOverview: MarketPriceOverview;
   let marketData: MarketItemData;
   let listingData: ListingData;
   let orderHistogram: MarketHistogramData;
   let errorTest: any;
+  let marketPriceHistory: any;
 
   before(async function() {
     this.timeout(30000)
@@ -29,6 +30,9 @@ describe('Base tests', () => {
     marketData = responses[0]
     listingData = responses[1]
     errorTest = responses[2]
+    marketPriceHistory = await parser.getPriceHistory('175896289').catch(e => {
+      return null
+    });
     if (marketData.itemNameId) {
       orderHistogram = await parser.getOrderHistogram(marketData.itemNameId);
     }
@@ -52,6 +56,10 @@ describe('Base tests', () => {
 
   it('Item listing', () => {
     expect(listingData.success).to.eql(true);
+  });
+
+  it('Price history', () => {
+    expect(marketPriceHistory).to.eql(null);
   });
 
   it('Exception test', () => {

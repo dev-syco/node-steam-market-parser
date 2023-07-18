@@ -1,13 +1,13 @@
 import { httpRequest, parseMarketData } from './utils';
-import { Currency } from './const';
+import { Currency, Errors } from './const';
 import { HttpsProxyAgentOptions } from 'https-proxy-agent';
 import {
   ListingData, ListingParams,
   MarketDataParams,
   MarketHistogramData,
-  MarketItemData,
+  MarketItemData, MarketPriceHistory,
   MarketPriceOverview,
-  OrderHistogramParams,
+  OrderHistogramParams, PriceHistoryParams,
   PriceOverviewParams,
   SteamMarketParserOptions
 } from './interface';
@@ -17,7 +17,7 @@ export class SteamMarketParser {
     country: 'US',
     language: 'english',
     currency: Currency.USD,
-    appId: 730,
+    appId: 730
   };
 
   public constructor(options?: SteamMarketParserOptions) {
@@ -30,7 +30,7 @@ export class SteamMarketParser {
       query: {
         l: this.options.language
       },
-      proxy: this.options.proxy,
+      proxy: this.options.proxy
     };
     return SteamMarketParser.getMarketData(itemName, params);
   }
@@ -40,24 +40,24 @@ export class SteamMarketParser {
       query: {
         country: this.options.country,
         language: this.options.language,
-        currency: this.options.currency,
+        currency: this.options.currency
       },
-      proxy: this.options.proxy,
+      proxy: this.options.proxy
     };
 
     return SteamMarketParser.getOrderHistogram(itemNameId, params);
   }
 
-  public getListing(itemName: string, { start, count } = { start: 0, count: 1}): Promise<ListingData> {
+  public getListing(itemName: string, { start, count } = { start: 0, count: 1 }): Promise<ListingData> {
     const params = {
       appId: this.options.appId,
       query: {
         country: this.options.country,
         language: this.options.language,
         currency: this.options.currency,
-        start, count,
+        start, count
       },
-      proxy: this.options.proxy,
+      proxy: this.options.proxy
     };
     return SteamMarketParser.getListing(itemName, params);
   }
@@ -67,14 +67,27 @@ export class SteamMarketParser {
       query: {
         appid: this.options.appId,
         currency: this.options.currency,
-        language: this.options.language,
+        language: this.options.language
+      },
+      proxy: this.options.proxy
+    });
+  }
+
+  public getPriceHistory(itemName: string): Promise<MarketPriceHistory> {
+    if (!this.options.cookie) {
+      throw new Error(Errors.METHODS_REQUIRES_AUTHORIZATION);
+    }
+    return SteamMarketParser.getPriceHistory(itemName, {
+      query: {
+        appid: this.options.appId
       },
       proxy: this.options.proxy,
+      cookie: this.options.cookie
     });
   }
 
   public static async getMarketData(itemName: string, options: MarketDataParams): Promise<MarketItemData> {
-    const path = `/market/listings/${ options.appId }/${ encodeURI(itemName) }`;
+    const path = `/market/listings/${options.appId}/${encodeURIComponent(itemName)}`;
     const response = await SteamMarketParser.request({ path, proxy: options.proxy, params: options.query });
 
     return parseMarketData(response);
@@ -85,9 +98,9 @@ export class SteamMarketParser {
       count: 1,
       currency: Currency.USD,
       language: 'english',
-      ...options.query,
+      ...options.query
     };
-    const path = `/market/listings/${ options.appId }/${ encodeURI(itemName) }/render`;
+    const path = `/market/listings/${options.appId}/${encodeURIComponent(itemName)}/render`;
     return SteamMarketParser.request({ path, json: true, proxy: options.proxy, params });
   }
 
@@ -95,7 +108,7 @@ export class SteamMarketParser {
     const params = {
       item_nameid: itemNameId,
       norender: 1,
-      ...options.query,
+      ...options.query
     };
     const path = `/market/itemordershistogram`;
 
@@ -104,16 +117,28 @@ export class SteamMarketParser {
 
   public static getPriceOverview(itemName: string, options: PriceOverviewParams): Promise<MarketPriceOverview> {
     const params = {
-      market_hash_name: encodeURI(itemName),
-      ...options.query,
+      market_hash_name: encodeURIComponent(itemName),
+      ...options.query
     };
     const path = `/market/priceoverview`;
 
     return SteamMarketParser.request({ path, json: true, params, proxy: options.proxy });
   }
 
-  private static request({ path, json, params, proxy }: { path: string, json?: boolean, params?: object, proxy?: string | HttpsProxyAgentOptions }) {
-    return httpRequest({ path, json, proxy, hostname: 'steamcommunity.com', port: 443, method: 'GET', params });
+  public static getPriceHistory(itemName: string, options: PriceHistoryParams): Promise<MarketPriceHistory> {
+    const params = {
+      market_hash_name: encodeURIComponent(itemName),
+      ...options.query
+    };
+    const path = `/market/pricehistory`;
+    const headers = {
+      Cookie: options.cookie
+    };
+    return SteamMarketParser.request({ path, json: true, params, proxy: options.proxy, headers });
+  }
+
+  private static request({ path, json, params, proxy, headers }: { path: string, json?: boolean, params?: object, proxy?: string | HttpsProxyAgentOptions, headers?: Record<string, string> }) {
+    return httpRequest({ path, json, proxy, hostname: 'steamcommunity.com', port: 443, method: 'GET', params, headers });
   }
 }
 

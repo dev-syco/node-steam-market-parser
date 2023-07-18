@@ -4,6 +4,7 @@ export enum Errors {
   ASSETS_PARSE_ERROR = 'Error while parsing assets data',
   PAGE_PARSING_ERROR = 'Error while parsing steamcommunity page',
   PROXY_CONNECTION_ERROR = 'Proxy connection error',
+  METHODS_REQUIRES_AUTHORIZATION = 'Cookie param required',
 }
 
 export enum Currency {
