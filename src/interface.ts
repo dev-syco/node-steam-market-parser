@@ -39,10 +39,10 @@ export interface MarketHistogramData {
   success: 0 | 1;
   sell_order_count: string;
   sell_order_price: string;
-  sell_order_table: OrderTableItem[];
+  sell_order_table?: OrderTableItem[];
   buy_order_count: string;
   buy_order_price: string;
-  buy_order_table: OrderTableItem[];
+  buy_order_table?: OrderTableItem[];
   highest_buy_order: string;
   lowest_sell_order: string;
   buy_order_graph: HistogramGraphItem[];
@@ -70,6 +70,7 @@ export interface SteamMarketParserOptions {
   language?: string;
   proxy?: string | HttpsProxyAgentOptions;
   cookie?: string;
+  headers?: Record<string, string | number | boolean>
 }
 
 export interface HttpRequestParams {
@@ -89,6 +90,7 @@ export interface PriceOverviewParams {
     currency: Currency | number;
     language?: string;
   };
+  headers?: Record<string, string | number | boolean>
   proxy?: string | HttpsProxyAgentOptions;
 }
 
@@ -96,7 +98,7 @@ export interface PriceHistoryParams {
   query: {
     appid: AppId;
   };
-  cookie: string;
+  headers?: Record<string, string | number | boolean>
   proxy?: string | HttpsProxyAgentOptions;
 }
 
@@ -105,7 +107,9 @@ export interface OrderHistogramParams {
     language?: string;
     country?: string;
     currency: Currency | number;
+    norender?: number;
   };
+  headers?: Record<string, string | number | boolean>
   proxy?: string | HttpsProxyAgentOptions;
 }
 
@@ -126,6 +130,7 @@ export interface ListingParams {
     count?: number;
     start?: number;
   };
+  headers?: Record<string, string>
 }
 
 

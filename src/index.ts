@@ -1,4 +1,4 @@
-import { httpRequest, parseMarketData } from './utils';
+import { httpRequest, parseMarketData, parseNoRenderOrderHistogramResponse } from './utils';
 import { Currency, Errors } from './const';
 import { HttpsProxyAgentOptions } from 'https-proxy-agent';
 import {
@@ -30,7 +30,8 @@ export class SteamMarketParser {
       query: {
         l: this.options.language
       },
-      proxy: this.options.proxy
+      proxy: this.options.proxy,
+      headers: this.options.headers
     };
     return SteamMarketParser.getMarketData(itemName, params);
   }
@@ -42,7 +43,8 @@ export class SteamMarketParser {
         language: this.options.language,
         currency: this.options.currency
       },
-      proxy: this.options.proxy
+      proxy: this.options.proxy,
+      headers: this.options.headers
     };
 
     return SteamMarketParser.getOrderHistogram(itemNameId, params);
@@ -69,7 +71,8 @@ export class SteamMarketParser {
         currency: this.options.currency,
         language: this.options.language
       },
-      proxy: this.options.proxy
+      proxy: this.options.proxy,
+      headers: this.options.headers
     });
   }
 
@@ -82,7 +85,10 @@ export class SteamMarketParser {
         appid: this.options.appId
       },
       proxy: this.options.proxy,
-      cookie: this.options.cookie
+      headers: {
+        cookie: this.options.cookie,
+        ...(this.options.headers || {})
+      }
     });
   }
 
@@ -101,18 +107,19 @@ export class SteamMarketParser {
       ...options.query
     };
     const path = `/market/listings/${options.appId}/${encodeURIComponent(itemName)}/render`;
-    return SteamMarketParser.request({ path, json: true, proxy: options.proxy, params });
+    return SteamMarketParser.request({ path, json: true, proxy: options.proxy, params, headers: options.headers });
   }
 
-  public static getOrderHistogram(itemNameId: string | number, options: OrderHistogramParams): Promise<MarketHistogramData> {
+  public static async getOrderHistogram(itemNameId: string | number, options: OrderHistogramParams): Promise<MarketHistogramData> {
     const params = {
       item_nameid: itemNameId,
-      norender: 1,
-      ...options.query
+      two_factor: 0,
+      ...options.query,
     };
     const path = `/market/itemordershistogram`;
 
-    return SteamMarketParser.request({ path, json: true, params, proxy: options.proxy });
+    const response = await SteamMarketParser.request({ path, json: true, params, proxy: options.proxy, headers: options.headers });
+    return params.norender !== 1 ? parseNoRenderOrderHistogramResponse(response) : response;
   }
 
   public static getPriceOverview(itemName: string, options: PriceOverviewParams): Promise<MarketPriceOverview> {
@@ -122,7 +129,7 @@ export class SteamMarketParser {
     };
     const path = `/market/priceoverview`;
 
-    return SteamMarketParser.request({ path, json: true, params, proxy: options.proxy });
+    return SteamMarketParser.request({ path, json: true, params, proxy: options.proxy, headers: options.headers });
   }
 
   public static getPriceHistory(itemName: string, options: PriceHistoryParams): Promise<MarketPriceHistory> {
@@ -131,13 +138,10 @@ export class SteamMarketParser {
       ...options.query
     };
     const path = `/market/pricehistory`;
-    const headers = {
-      Cookie: options.cookie
-    };
-    return SteamMarketParser.request({ path, json: true, params, proxy: options.proxy, headers });
+    return SteamMarketParser.request({ path, json: true, params, proxy: options.proxy, headers: options.headers });
   }
 
-  private static request({ path, json, params, proxy, headers }: { path: string, json?: boolean, params?: object, proxy?: string | HttpsProxyAgentOptions, headers?: Record<string, string> }) {
+  private static request({ path, json, params, proxy, headers }: { path: string, json?: boolean, params?: object, proxy?: string | HttpsProxyAgentOptions, headers?: Record<string, any> }) {
     return httpRequest({ path, json, proxy, hostname: 'steamcommunity.com', port: 443, method: 'GET', params, headers });
   }
 }
