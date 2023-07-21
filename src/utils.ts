@@ -1,9 +1,10 @@
-import { HistogramGraphItem, HttpRequestParams, OrderTableItem } from './interface';
+import { HttpRequestParams } from './interface';
 import { IncomingMessage, RequestOptions } from 'http';
 import { Errors, GOOD_RESPONSE_STATUS_CODE } from './const';
 import { request } from 'https';
 import HttpsProxyAgent from 'https-proxy-agent';
 import * as zlib from 'zlib';
+import { SocksProxyAgent } from 'socks-proxy-agent';
 
 export function httpRequest({ hostname, port, path, json, proxy, method, params, headers }: HttpRequestParams): Promise<string | any> {
   return new Promise(async (res, rej) => {
@@ -25,8 +26,12 @@ export function httpRequest({ hostname, port, path, json, proxy, method, params,
       headers
     };
 
-    if (proxy) {
-      options.agent = HttpsProxyAgent(proxy);
+    if(proxy) {
+      if (typeof proxy === 'string' && proxy.includes('socks')) {
+        options.agent = new SocksProxyAgent(proxy as string);
+      } else {
+        options.agent = HttpsProxyAgent(proxy);
+      }
     }
 
     const req = request(options, (response: IncomingMessage) => {

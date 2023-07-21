@@ -141,7 +141,7 @@ export class SteamMarketParser {
     return SteamMarketParser.request({ path, json: true, params, proxy: options.proxy, headers: options.headers });
   }
 
-  private static request({ path, json, params, proxy, headers }: { path: string, json?: boolean, params?: object, proxy?: string | HttpsProxyAgentOptions, headers?: Record<string, any> }) {
+  private static request({ path, json, params, proxy, headers }: { path: string, json?: boolean, params?: object, proxy?: string, headers?: Record<string, any> }) {
     return httpRequest({ path, json, proxy, hostname: 'steamcommunity.com', port: 443, method: 'GET', params, headers });
   }
 }

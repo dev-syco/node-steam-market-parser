@@ -1,5 +1,3 @@
-import { HttpsProxyAgentOptions } from 'https-proxy-agent';
-
 import { Currency } from './const';
 
 /* Date, price, count */
@@ -68,7 +66,7 @@ export interface SteamMarketParserOptions {
   appId: AppId;
   country?: string;
   language?: string;
-  proxy?: string | HttpsProxyAgentOptions;
+  proxy?: string;
   cookie?: string;
   headers?: Record<string, string | number | boolean>
 }
@@ -80,7 +78,7 @@ export interface HttpRequestParams {
   method: 'GET' | 'POST';
   params?: object;
   json?: boolean;
-  proxy?: string | HttpsProxyAgentOptions;
+  proxy?: string;
   headers?: Record<string, string>
 }
 
@@ -91,7 +89,7 @@ export interface PriceOverviewParams {
     language?: string;
   };
   headers?: Record<string, string | number | boolean>
-  proxy?: string | HttpsProxyAgentOptions;
+  proxy?: string;
 }
 
 export interface PriceHistoryParams {
@@ -99,7 +97,7 @@ export interface PriceHistoryParams {
     appid: AppId;
   };
   headers?: Record<string, string | number | boolean>
-  proxy?: string | HttpsProxyAgentOptions;
+  proxy?: string;
 }
 
 export interface OrderHistogramParams {
@@ -110,12 +108,12 @@ export interface OrderHistogramParams {
     norender?: number;
   };
   headers?: Record<string, string | number | boolean>
-  proxy?: string | HttpsProxyAgentOptions;
+  proxy?: string;
 }
 
 export interface MarketDataParams {
   appId: AppId;
-  proxy?: string | HttpsProxyAgentOptions;
+  proxy?: string;
   query: {
     l?: string;
   };
@@ -123,7 +121,7 @@ export interface MarketDataParams {
 
 export interface ListingParams {
   appId: AppId;
-  proxy?: string | HttpsProxyAgentOptions;
+  proxy?: string;
   query: {
     language?: string;
     currency?: Currency;
