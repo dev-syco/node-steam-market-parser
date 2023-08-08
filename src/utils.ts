@@ -181,12 +181,13 @@ export function parseNoRenderOrderHistogramResponse(data: any) {
     price_prefix,
     price_suffix,
     sell_order_summary,
+    buy_order_summary,
     success,
   } = data;
   // tslint:disable-next-line:variable-name
   const [sell_order_count, sell_order_price] = extractOrdersSummary(sell_order_summary);
   // tslint:disable-next-line:variable-name
-  const [buy_order_count, buy_order_price] = extractOrdersSummary(sell_order_summary);
+  const [buy_order_count, buy_order_price] = extractOrdersSummary(buy_order_summary);
   return {
     success,
     sell_order_count,
